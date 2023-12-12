@@ -43,7 +43,6 @@ if ($result->num_rows > 0) {
         $dayOfWeek = $row['day_of_week'];
         $orderCount = $row['order_count'];
         
-        // Map numeric day index to day name
         switch ($dayOfWeek) {
             case 1: $dayName = 'Sunday'; break;
             case 2: $dayName = 'Monday'; break;
@@ -52,10 +51,9 @@ if ($result->num_rows > 0) {
             case 5: $dayName = 'Thursday'; break;
             case 6: $dayName = 'Friday'; break;
             case 7: $dayName = 'Saturday'; break;
-            default: $dayName = ''; break; // Handle unexpected values
+            default: $dayName = ''; break;
         }
 
-        // Update the count in the associative array
         $ordersByDay[$dayName] = $orderCount;
     }
 }
