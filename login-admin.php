@@ -4,12 +4,12 @@ require_once 'connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
-    $email = $data['email'];
+    $username = $data['username'];
     $password = $data['password'];
 
-    $sql = "SELECT * FROM customers WHERE email = ?";
+    $sql = "SELECT * FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $email);
+    $stmt->bind_param('s', $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $stored_password_hash)) {
             
             header('Content-Type: application/json');
-            echo json_encode($row);
+            echo json_encode(['user_id'=> $row['id'], 'username' => $username]);
             die();
         } else {
             
