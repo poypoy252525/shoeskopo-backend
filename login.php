@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die();
         }
     } else {
-        // User not found
+        
         header('Content-Type: application/json');
         echo json_encode(['status'=> 'error', 'message' => 'User not found']);
         die();
