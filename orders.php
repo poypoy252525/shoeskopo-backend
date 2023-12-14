@@ -96,6 +96,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['customer_id'])) {
     $customer_id = $_GET['customer_id'];
+
+    if (isset($_GET['type']) && $_GET['type'] === 'totalspent') {
+        $sql = "SELECT SUM(orderitems.subtotal) AS total_spent FROM `orders` JOIN orderitems ON orders.order_id = orderitems.order_id WHERE customer_id = $customer_id";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            header('Content-Type: application/json');
+            echo json_encode($row);
+        }
+
+        
+        exit();
+    }
+
     $sql = "SELECT * FROM orders WHERE customer_id = $customer_id";
 
     $result = $conn->query($sql);
@@ -114,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['customer_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    
     $sql = "SELECT * FROM orders JOIN customers ON orders.customer_id = customers.customer_id";
 
     $result = $conn->query($sql);
@@ -128,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     header('Content-Type: application/json');
     echo json_encode($data);
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
@@ -148,5 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         echo json_encode(['status' => 'error', 'message' => 'Something went wrong.']);
     }
 }
+
 
 ?>
